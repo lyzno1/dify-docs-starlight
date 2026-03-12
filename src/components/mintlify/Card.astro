@@ -1,0 +1,10 @@
+---
+const { title, href } = Astro.props;
+---
+{href
+? (
+  <a href={href}><strong>{title}</strong><slot /></a>
+)
+: (
+  <div><strong>{title}</strong><slot /></div>
+)}

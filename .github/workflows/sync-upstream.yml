@@ -1,0 +1,62 @@
+name: Sync Dify Docs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync upstream docs
+        run: pnpm run sync:docs
+
+      - name: Collect sync metadata
+        id: sync_meta
+        run: |
+          echo "timestamp=$(date -u +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+          commit="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; const lock = JSON.parse(readFileSync("upstream/lock.json", "utf8")); process.stdout.write(lock.commit ?? "unknown")')"
+          echo "synced_commit=$commit" >> "$GITHUB_OUTPUT"
+
+      - name: Astro check
+        run: pnpm run check
+
+      - name: Build site
+        run: pnpm run build
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'chore: sync Dify docs'
+          branch: chore/sync-dify-docs
+          title: 'chore: sync Dify docs'
+          body: |
+            Automated sync from upstream [dify-docs](https://github.com/langgenius/dify-docs).
+
+            - Upstream commit: `${{ steps.sync_meta.outputs.synced_commit }}`
+            - Sync timestamp (UTC): `${{ steps.sync_meta.outputs.timestamp }}`
+            - Ran `pnpm run sync:docs`
+            - Ran `pnpm run check`
+            - Ran `pnpm run build`
+          delete-branch: true

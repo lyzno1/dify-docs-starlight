@@ -1,0 +1,7 @@
+---
+const { name, type, required } = Astro.props;
+---
+<div>
+  <code>{name}</code>{type && <span> ({type})</span>}{required && <span> *</span>}
+  <slot />
+</div>

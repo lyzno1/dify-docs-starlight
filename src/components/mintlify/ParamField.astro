@@ -1,0 +1,8 @@
+---
+const { path: fieldPath, query, body, header, cookie, name, type, required } = Astro.props
+const fieldName = name || fieldPath || query || body || header || cookie;
+---
+<div>
+  <code>{fieldName}</code>{type && <span> ({type})</span>}{required && <span> *</span>}
+  <slot />
+</div>
