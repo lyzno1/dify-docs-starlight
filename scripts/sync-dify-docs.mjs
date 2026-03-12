@@ -367,7 +367,7 @@ async function main() {
       ['clone', '--depth', '1', '--filter=blob:none', '--sparse', '--branch', branch, UPSTREAM_REPO, tmpDir],
       { stdio: 'inherit' },
     )
-    run('git', ['-C', tmpDir, 'sparse-checkout', 'set', 'en', 'zh', 'ja', 'docs.json', 'images', 'logo', 'favicon.svg', 'style.css', 'dify-logo.png'], { stdio: 'inherit' })
+    run('git', ['-C', tmpDir, 'sparse-checkout', 'set', '--skip-checks', 'en', 'zh', 'ja', 'docs.json', 'images', 'logo', 'favicon.svg', 'style.css', 'dify-logo.png'], { stdio: 'inherit' })
     sourceCommit = run('git', ['-C', tmpDir, 'rev-parse', 'HEAD'])
     sourceRef = branch
     repoRoot = tmpDir

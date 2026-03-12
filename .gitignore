@@ -31,3 +31,4 @@ src/content/docs/ja/
 # synced static assets
 public/images/
 public/logo/
+.vercel
