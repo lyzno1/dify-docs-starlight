@@ -1,8 +1,8 @@
 {
   "upstreamRepo": "https://github.com/langgenius/dify-docs.git",
   "ref": "main",
-  "commit": "a958852d8db9689e05c8ee2025aac73d1ab7a6b2",
-  "syncedAt": "2026-03-14T04:42:32.970Z",
+  "commit": "7a8d6060958586a1a5ee5d7fe99f83eeb23c2475",
+  "syncedAt": "2026-04-03T04:42:57.316Z",
   "counts": {
     "totalFiles": 479
   }
